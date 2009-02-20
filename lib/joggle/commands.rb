@@ -1,4 +1,4 @@
-module Jitter
+module Joggle
   module Commands
     def do_register(who, arg)
       # see if user is registered

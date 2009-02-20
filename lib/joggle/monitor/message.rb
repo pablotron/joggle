@@ -1,7 +1,7 @@
 require 'thread'
 require 'pablotron/observable'
 
-module Jitter
+module Joggle
   module Monitor
     class Message
       include Pablotron::Observable

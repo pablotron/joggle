@@ -2,7 +2,7 @@ require 'pablotron/observable'
 require 'xmpp4r'
 require 'xmpp4r/roster'
 
-module Jitter
+module Joggle
   module Jabber
     class Client
       include Pablotron::Observable

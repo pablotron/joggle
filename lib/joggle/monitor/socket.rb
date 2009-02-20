@@ -1,6 +1,6 @@
 require 'pablotron/observable'
 
-module Jitter
+module Joggle
   module Monitor
     class Socket 
       include Pablotron::Observable

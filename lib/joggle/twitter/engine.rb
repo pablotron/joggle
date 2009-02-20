@@ -2,7 +2,7 @@ require 'net/http'
 require 'time'
 require 'pablotron/observable'
 
-module Jitter
+module Joggle
   module Twitter
     class Engine
       include Pablotron::Observable

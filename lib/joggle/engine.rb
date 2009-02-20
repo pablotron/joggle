@@ -1,8 +1,8 @@
 require 'pablotron/observable'
-require 'jitter/monitor/message'
-require 'jitter/commands'
+require 'joggle/monitor/message'
+require 'joggle/commands'
 
-module Jitter
+module Joggle
   class Engine
     include Pablotron::Observable
     include Commands

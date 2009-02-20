@@ -3,7 +3,7 @@ require 'net/http'
 require 'json'
 require 'pablotron/cache'
 
-module Jitter
+module Joggle
   module Twitter
     class Fetcher
       DEFAULTS = {

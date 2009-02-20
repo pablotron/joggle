@@ -1,7 +1,7 @@
 require 'pablotron/observable'
-require 'jitter/monitor/socket'
+require 'joggle/monitor/socket'
 
-module Jitter
+module Joggle
   module Monitor
     class Jabber 
       include Pablotron::Observable

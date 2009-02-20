@@ -3,19 +3,19 @@ require 'pstore'
 require 'logger'
 require 'fileutils'
 require 'pablotron/cache'
-require 'jitter/version'
-require 'jitter/store/pstore/all'
-require 'jitter/jabber/client'
-require 'jitter/twitter/fetcher'
-require 'jitter/twitter/engine'
-require 'jitter/engine'
+require 'joggle/version'
+require 'joggle/store/pstore/all'
+require 'joggle/jabber/client'
+require 'joggle/twitter/fetcher'
+require 'joggle/twitter/engine'
+require 'joggle/engine'
 
-module Jitter
+module Joggle
   module Runner
     class PStore
       PATHS = {
-        'store' => ENV['JITTER_STORE_PATH'] || '~/.jitter/jitter.pstore',
-        'log'   => ENV['JITTER_LOG_PATH'] || '~/.jitter/jitter.log',
+        'store' => ENV['JOGGLE_STORE_PATH'] || '~/.joggle/joggle.pstore',
+        'log'   => ENV['JOGGLE_LOG_PATH'] || '~/.joggle/joggle.log',
       }
 
       DEFAULTS = {
@@ -30,8 +30,8 @@ module Jitter
 
         # cache configuration
         'runner.cache.headers'    => {
-          # 'user-agent' => "Jitter/#{Jitter::VERSION}",
-          'user-agent' => "Jitter/#{Jitter::VERSION}",
+          # 'user-agent' => "Joggle/#{Joggle::VERSION}",
+          'user-agent' => "Joggle/#{Joggle::VERSION}",
         },
       }
 
@@ -83,7 +83,7 @@ module Jitter
         @client = Jabber::Client.new(@opt['runner.client.user'], @opt['runner.client.pass'])
         @client.on(self)
 
-        # create new jitter engine
+        # create new joggle engine
         @log.debug('Creating engine.')
         @engine = Engine.new(@client, @tweeter)
         @engine.on(self)

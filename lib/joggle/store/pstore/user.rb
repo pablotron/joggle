@@ -1,6 +1,6 @@
 require 'digest/md5'
 
-module Jitter
+module Joggle
   module Store
     module PStore
       module User

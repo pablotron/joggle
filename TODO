@@ -1,4 +1,5 @@
 [ ] new name, jitter is used too much
+  - joggle
 [ ] help text
 [ ] remove /resource bit from jid
 [ ] handle rate limiting

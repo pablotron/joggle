@@ -1,8 +1,8 @@
-require 'jitter/store/pstore/cache'
-require 'jitter/store/pstore/message'
-require 'jitter/store/pstore/user'
+require 'joggle/store/pstore/cache'
+require 'joggle/store/pstore/message'
+require 'joggle/store/pstore/user'
 
-module Jitter
+module Joggle
   module Store
     module PStore
       class All
