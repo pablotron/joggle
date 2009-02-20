@@ -1,0 +1,130 @@
+require 'rubygems'
+require 'pstore'
+require 'logger'
+require 'fileutils'
+require 'pablotron/cache'
+require 'jitter/version'
+require 'jitter/store/pstore/all'
+require 'jitter/jabber/client'
+require 'jitter/twitter/fetcher'
+require 'jitter/twitter/engine'
+require 'jitter/engine'
+
+module Jitter
+  module Runner
+    class PStore
+      PATHS = {
+        'store' => ENV['JITTER_STORE_PATH'] || '~/.jitter/jitter.pstore',
+        'log'   => ENV['JITTER_LOG_PATH'] || '~/.jitter/jitter.log',
+      }
+
+      DEFAULTS = {
+        # store configuration
+        'runner.store.path'       => File.expand_path(PATHS['store']),
+
+        # log configuration
+        'runner.log.path'         => File.expand_path(PATHS['log']),
+        # FIXME: change to INFO
+        'runner.log.level'        => 'DEBUG',
+        'runner.log.format'       => '%Y-%m-%dT%H:%M:%S',
+
+        # cache configuration
+        'runner.cache.headers'    => {
+          # 'user-agent' => "Jitter/#{Jitter::VERSION}",
+          'user-agent' => "Jitter/#{Jitter::VERSION}",
+        },
+      }
+
+      attr_reader :log, :store, :cache, :fetcher, :tweeter, :client, :engine
+
+      def self.run(opt = nil)
+        new(opt).run
+      end
+
+      PATH_KEYS = %w{store log}
+
+      def initialize(opt = nil)
+        @opt = DEFAULTS.merge(opt || {})
+
+        # make sure paths exist
+        PATH_KEYS.each do |key|
+          FileUtils.mkdir_p(File.dirname(@opt["runner.#{key}.path"]))
+        end
+
+        # create logger
+        @log = Logger.new(@opt['runner.log.path'])
+        @log.level = Logger.const_get(@opt['runner.log.level'].upcase)
+        @log.datetime_format = @opt['runner.log.format']
+        @log.info('Log started.')
+
+        # create backing store
+        path = @opt['runner.store.path'] 
+        @log.debug("Creating backing store \"#{path}\".")
+        pstore = ::PStore.new(path)
+        @store = Store::PStore::All.new(pstore)
+      end
+
+      def run
+        # create cache
+        @log.debug('Creating cache.')
+        @cache = Pablotron::Cache.new(@store, @opt['runner.cache.headers'])
+
+        # create fetcher
+        @log.debug('Creating twitter fetcher.')
+        @fetcher = Twitter::Fetcher.new(@store, @cache, @opt)
+
+        # create twitter engine
+        @log.debug('Creating twitter engine.')
+        @tweeter = Twitter::Engine.new(@store, @fetcher, @opt)
+        @tweeter.on(self)
+
+        # create jabber client
+        @log.debug('Creating jabber client.')
+        @client = Jabber::Client.new(@opt['runner.client.user'], @opt['runner.client.pass'])
+        @client.on(self)
+
+        # create new jitter engine
+        @log.debug('Creating engine.')
+        @engine = Engine.new(@client, @tweeter)
+        @engine.on(self)
+
+        @log.debug('Running engine.')
+        @engine.run
+      end
+
+      #################
+      # log listeners #
+      #################
+      
+      def on_twitter_engine_register_user(e, who, user, pass)
+        pre = '<Twitter::Engine>'
+        @log.info("#{pre} Registering user: #{who} (xmpp) => #{user} (twitter).")
+      end
+      
+      def on_twitter_engine_unregister_user(e, who)
+        pre = '<Twitter::Engine>'
+        @log.info("#{pre} Unregistering user: #{who} (xmpp).")
+      end
+
+      def on_twitter_engine_tweet(e, who, msg)
+        pre = '<Twitter::Engine>'
+        @log.info("#{pre} Tweet: #{who}: #{msg}.")
+      end
+
+      def on_twitter_engine_update(e, user)
+        pre = '<Twitter::Engine>'
+        @log.info("#{pre} Updating: #{user['who']}.")
+      end
+
+      def on_engine_command(e, who, cmd, arg)
+        pre = '<Engine>'
+        @log.info("#{pre} Command: #{who}: cmd = #{cmd}, arg = #{arg}.")
+      end
+
+      def on_engine_message(e, who, msg)
+        pre = '<Engine>'
+        @log.info("#{pre} Message: #{who}: #{msg}.")
+      end
+    end
+  end
+end

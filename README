@@ -1,0 +1,5 @@
+Jitter README
+=============
+
+Jitter is an Twitter to XMPP relay.  Jabber messages are sent as tweets,
+and tweets are sent as instant messages.  
