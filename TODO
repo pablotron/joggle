@@ -1,0 +1,5 @@
+[ ] new name, jitter is used too much
+[ ] help text
+[ ] remove /resource bit from jid
+[ ] handle rate limiting
+[ ] add additional backends (sqlite3, at least)
