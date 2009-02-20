@@ -1,6 +1,6 @@
-[ ] new name, jitter is used too much
-  - joggle
+[x] new name, jitter is used too much (-> joggle)
 [ ] help text
 [ ] remove /resource bit from jid
 [ ] handle rate limiting
 [ ] add additional backends (sqlite3, at least)
+[ ] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
