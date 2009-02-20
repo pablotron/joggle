@@ -3,4 +3,8 @@
 [ ] remove /resource bit from jid
 [ ] handle rate limiting
 [ ] add additional backends (sqlite3, at least)
-[ ] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
+[x] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
+[ ] handle client disconnects
+[ ] fix http caching (give count to twitter)
+[ ] cli tool and option parsing
+[ ] redirect jabber client output to log file
