@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'joggle/cli/runner'
+
+Joggle::CLI::Runner.run(ARGV)

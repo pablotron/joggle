@@ -3,12 +3,12 @@
 [x] remove /tmp/foo debugging
 [x] help text
 [x] add new tweets to message store (so they don't show up on updates)
+[x] cli tool and option parsing (bin/joggle)
 [ ] remove /resource bit from jid
 [ ] handle rate limiting (add Throttle and message queue?)
 [ ] add additional backends (sqlite3, at least)
 [ ] handle client disconnects
 [ ] fix http caching (give count to twitter)
-[ ] cli tool and option parsing
 [ ] redirect jabber client output to log file
 [ ] rdoc documentation
 [ ] gem
