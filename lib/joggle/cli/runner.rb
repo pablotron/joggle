@@ -8,12 +8,12 @@ module Joggle
         new(args).run
       end
 
-      def initialize(args)
-        @opt = OptionParser.run(args)
+      def initialize(app, args)
+        @opt = OptionParser.run(app, args)
       end
 
       def run
-        Joggle::Runner.run(opt)
+        Joggle::Runner::PStore.run(opt)
       end
     end
   end
