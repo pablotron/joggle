@@ -2,6 +2,7 @@
 [x] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
 [x] remove /tmp/foo debugging
 [x] help text
+[x] add new tweets to message store (so they don't show up on updates)
 [ ] remove /resource bit from jid
 [ ] handle rate limiting (add Throttle and message queue?)
 [ ] add additional backends (sqlite3, at least)
@@ -14,4 +15,3 @@
 [ ] make config directives relative to config path
 [ ] add support for jabber auto-registration?
 [ ] add client-side support for restricted user list
-[ ] add new tweets to message store (so they don't show up on updates)
