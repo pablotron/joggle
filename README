@@ -1,5 +1,109 @@
-Joggle README
-=============
+Joggle 0.1.0 README
+===================
 
+Please see the file COPYING for licensing and warranty information.  The
+latest version of this software is available at the following URL:
+
+    http://pablotron.org/software/joggle/
+
+Overview
+========
 Joggle is an Twitter to XMPP relay.  Jabber messages are sent as tweets,
 and tweets are sent as instant messages.  
+
+System Requirements
+===================
+Here's what you'll need to get started using Joggle:
+
+  * Required:
+    - Ruby 1.8 (a recent version, including RubyGems)
+    - JSON (gem install json)
+    - XMPP4r (gem install xmpp4r)
+
+  * Recommended:
+    - SQLite3-Ruby (gem install sqlite3)
+
+You'll also need a spare Jabber account to relay messages.  If you don't
+have your own Jabber server, you can create a free one through
+jabber.org or gmail.com.
+
+Installation
+============
+If you're using Debian or a Debian-based Linux distribution (e.g.
+Ubuntu), then something like this should suffice:
+
+    sudo apt-get install ruby
+    sudo gem install joggle
+
+Configuration
+=============
+The simplest way to get Joggle up and running is like so:
+
+    # save joggle jid/password in environment 
+    export JOGGLE_JABBER_ID="joggle-example@example.com"
+    export JOGGLE_PASSWORD="s3kr3t_"
+
+    # run joggle
+    joggle
+
+Want to run Joggle via Cron?  Here's how:
+
+    # save joggle jid/password in environment 
+    JOGGLE_JABBER_ID="joggle-example@example.com"
+    JOGGLE_PASSWORD="s3kr3t_"
+
+    # run joggle every time the system is restarted
+    @reboot joggle
+
+Note: Although you can specify the JID and password via the
+command-line, doing so is not recommended, particularly on a shared
+system.
+
+Using Joggle
+============
+In order to use Joggle you'll need to bind your Jabber account to your
+twitter account.  Here's how:
+
+ 1. Add the Joggle Jabber ID to your IM client (e.g.
+    joggle-example@example.com in the examples above).
+ 2. Register your Twitter account with Joggle by sending a 
+    message to Joggle in the following form:
+
+    ".register <twitter_user> <twitter_pass>"
+
+    (replace <twitter_user> and <twitter_pass> with your Twitter
+    username and password, respectively)
+
+Note that more than one person can use the Joggle account.  Each person
+just needs to follow the steps above (this feature can be disabled, see
+the "Advanced Configuration" section below).  At the moment you can only
+register one Twitter account per person, although this may change in the
+future.
+
+If you change your mind and decide not to use Joggle any more, you can
+tell it to forget your Twitter account information by sending a message
+like this:
+
+    ".unregister"
+
+There are several other commands available via message as well; use the
+".help" command for a complete list.
+
+Advanced Configuration
+======================
+TODO
+
+  * removing automated registration
+  * ignoring users
+
+Security Concerns
+=================
+TODO
+
+  * note about stored passwords
+  * note about specifying user/pass on command-line
+
+About the Author
+================
+Paul Duncan <pabs@pablotron.org>
+http://pablotron.org/
