@@ -2,6 +2,9 @@ require 'pablotron/observable'
 require 'joggle/commands'
 
 module Joggle
+  #
+  # Joggle engine object.  This is where the magic happens.
+  #
   class Engine
     include Pablotron::Observable
     include Commands
@@ -12,6 +15,9 @@ module Joggle
       'engine.update_interval'        => 5,
     }
 
+    #
+    # Create a new Joggle engine object.
+    #
     def initialize(client, tweeter, opt = nil)
       @opt = DEFAULTS.merge(opt || {})
 
@@ -21,6 +27,9 @@ module Joggle
       @tweeter = tweeter
     end
 
+    #
+    # Run forever.
+    #
     def run
       loop {
         # check for updates
@@ -31,6 +40,9 @@ module Joggle
       }
     end
 
+    #
+    # Reply to a user with the given message.
+    #
     def reply(who, msg)
       if fire('engine_before_reply', who, msg)
         @client.deliver(who, msg)
@@ -46,6 +58,9 @@ module Joggle
 
     COMMAND_REGEX = /^\s*\.(\w+)\s*(\S.*|)\s*$/
 
+    #
+    # Jabber message listener callback.
+    #
     def on_jabber_client_message(client, msg)
       if md = msg.body.match(COMMAND_REGEX)
         cmd, who = md[1].downcase, msg.from.to_s
