@@ -56,13 +56,16 @@ module Joggle
       end
 
       def tweet(who, msg)
-        store, fetcher = @store, @fetcher
+        ret, store, fetcher = nil, @store, @fetcher
 
         stoppable_action('twitter_engine_tweet', who, msg) do
           if user = store.get_user(who)
-            fetcher.tweet(user, msg)
+            ret = fetcher.tweet(user, msg)
           end
         end
+
+        # return result
+        ret
       end
 
       def list(who, &block)

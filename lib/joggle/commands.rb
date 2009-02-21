@@ -2,9 +2,6 @@ module Joggle
   module Commands
     def do_register(who, arg)
       # see if user is registered
-        File.open('/tmp/foo.log', 'a') do |fh|
-          fh.puts("who = #{who}, arg = #{arg}")
-        end
       if user = @tweeter.registered?(who)
         # user is registered, return error
         msg = "Already registered as #{user}"
@@ -22,9 +19,6 @@ module Joggle
           msg = "Couldn't register: #{err}"
         end
       end
-        File.open('/tmp/foo.log', 'a') do |fh|
-          fh.puts("msg = #{msg}")
-        end
 
       # reply to request
       reply(who, msg)
@@ -85,8 +79,14 @@ module Joggle
     end
 
     HELP = [
-      "This is a help message",
-      "Eventually help commands will go here."
+      "Joggle Help:",
+      "Available commands:",
+      "  .help                   - Display this help screen.",
+      "  .register <user> <pass> - Register Twitter username and password.",
+      "  .unregister             - Forget Twitter username and password.",
+      # TODO: "  .force <msg>            - Forget Twitter username and password.",
+      "Any other message with two words or more is sent as a tweet.",
+      "See the <a title='Joggle home page' alt='Joggle home page' href='http://pablotron.org/software/joggle/'>http://pablotron.org/software/joggle/</a> for additional information",
     ].join("\n")
 
     def do_help(who, arg)

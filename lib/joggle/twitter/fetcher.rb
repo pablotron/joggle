@@ -62,6 +62,13 @@ module Joggle
           case r
           when Net::HTTPSuccess
             ret = JSON.parse(r.body)
+
+            # check result
+            if ret && ret.key?('id')
+              @store.add_message(ret['id'], ret)
+            else
+              throw "got weird response from twitter"
+            end
           else
             throw r
           end

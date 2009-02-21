@@ -45,7 +45,7 @@ module Joggle
       # jabber listeners #
       ####################
 
-      OP_MATCH = /^\s*\.(register|unregister|list|delete|help)\s*(\S.*|)\s*$/
+      OP_MATCH = /^\s*\.(\w+)\s*(\S.*|)\s*$/
 
       def on_jabber_client_message(client, msg)
         if md = msg.body.match(OP_MATCH)
