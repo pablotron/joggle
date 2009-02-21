@@ -4,9 +4,20 @@ require 'xmpp4r/roster'
 
 module Joggle
   module Jabber
+    #
+    # Simple XMPP client.
+    #
     class Client
       include Pablotron::Observable
 
+      #
+      # Create a new Jabber::Client object.
+      #
+      # Example:
+      #
+      #   # create new client object
+      #   client = Client.new('foo@example.com', 'mysekretpassword')
+      #
       def initialize(user, pass)
         ::Jabber.debug = true
         Thread.abort_on_exception = false
@@ -31,13 +42,23 @@ module Joggle
         end
 
         roster.add_subscription_request_callback do |item, presence|
-          if fire('before_jabber_client_accept_subscription', presence)
-            roster.accept_subscription(presence.from)
-            fire('jabber_client_accept_subscription', presence)
+          from = presence.from
+
+          if fire('before_jabber_client_accept_subscription', from)
+            roster.accept_subscription(from)
+            fire('jabber_client_accept_subscription', from)
           end
         end
       end
 
+      #
+      # Deliver jabber message to user.
+      #
+      # Example:
+      #
+      #   # send message
+      #   client.deliver('foo@example.com', 'hey there!')
+      #
       def deliver(who, body, type = :chat)
         msg = ::Jabber::Message.new(who, body)
         msg.type = type
