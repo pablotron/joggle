@@ -1,5 +1,4 @@
 require 'pablotron/observable'
-require 'joggle/monitor/message'
 require 'joggle/commands'
 
 module Joggle
@@ -10,30 +9,55 @@ module Joggle
     DEFAULTS = {
       'engine.time_format'            => '%H:%M',
       'engine.message_sanity_checks'  => true,
+      'engine.update_interval'        => 5,
     }
 
     def initialize(client, tweeter, opt = nil)
       @opt = DEFAULTS.merge(opt || {})
 
-      @monitor = Monitor::Message.new(client)
-      @monitor.on(self)
+      @client = client
+      @client.on(self)
 
       @tweeter = tweeter
     end
 
     def run
-      @monitor.run
+      loop {
+        # check for updates
+        update
+
+        # wait until next update
+        delay
+      }
     end
 
     def reply(who, msg)
-      @monitor.reply(who, msg)
+      if fire('engine_before_reply', who, msg)
+        @client.deliver(who, msg)
+        fire('engine_reply', who, msg)
+      else
+        fire('engine_reply_stopped', who, msg, err)
+      end
     end
 
-    #####################
-    # message listeners #
-    #####################
+    ####################
+    # client listeners #
+    ####################
 
-    def on_command(mon, who, cmd, arg)
+    COMMAND_REGEX = /^\s*\.(\w+)\s*(\S.*|)\s*$/
+
+    def on_jabber_client_message(client, msg)
+      if md = msg.body.match(COMMAND_REGEX)
+        cmd, who = md[1].downcase, msg.from.to_s
+        handle_command(who, cmd, md[2])
+      else
+        handle_message(msg.from.to_s, msg.body)
+      end
+    end
+
+    private 
+
+    def handle_command(who, cmd, arg)
       # build method name
       meth = "do_#{cmd}"
 
@@ -48,7 +72,7 @@ module Joggle
       end
     end
 
-    def on_message(mon, who, msg)
+    def handle_message(who, msg)
       # remove extraneous whitespace
       msg, out_msg = msg.strip, nil
 
@@ -71,13 +95,27 @@ module Joggle
       reply(who, out)
     end
 
-    def on_idle(mon, client)
-      @tweeter.update do |who, id, time, from, msg|
-        reply(who, make_response(id, time, from, msg))
+
+    def update
+      if fire('before_engine_update')
+        @tweeter.update do |who, id, time, from, msg|
+          reply(who, make_response(id, time, from, msg))
+        end
+
+        fire('engine_update')
+      else
+        fire('engine_update_stopped')
       end
     end
 
-    private 
+    def delay
+      fire('engine_idle')
+
+      minutes = @opt['engine.update_interval']
+      minutes = 3 if minutes < 3
+
+      sleep(minutes * 60)
+    end
 
     #
     # Constraints to prevent garbage tweets.
