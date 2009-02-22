@@ -81,9 +81,9 @@ module Joggle
           when Net::HTTPSuccess
             ret = JSON.parse(r.body)
 
-            File.open('/tmp/foo.log', 'a') do |fh|
-              fh.puts "r.body = #{r.body}"
-            end
+            # File.open('/tmp/foo.log', 'a') do |fh|
+            #   fh.puts "r.body = #{r.body}"
+            # end
 
             # check result
             if ret && ret.key?('id')

@@ -148,12 +148,23 @@ module Joggle
       #
       # Log twitter_engine_update events.
       #
-      # Note: This method is a listener for Joggle::Engine objects; you
+      # Note: This method is a listener for Twitter::Engine objects; you
       # should never call it directly.
       #
       def on_twitter_engine_update(e, user)
         pre = '<Twitter::Engine>'
         @log.info("#{pre} Updating: #{user['who']}.")
+      end
+
+      #
+      # Log engine_reply events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_reply(e, who, msg)
+        pre = '<Engine>'
+        @log.info("#{pre} Reply: #{who}: #{msg}.")
       end
 
       #

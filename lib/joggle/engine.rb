@@ -10,9 +10,26 @@ module Joggle
     include Commands
 
     DEFAULTS = {
-      'engine.time_format'            => '%H:%M',
-      'engine.message_sanity_checks'  => true,
-      'engine.update_interval'        => 5,
+      # output time format
+      'engine.time_format'              => '%H:%M',
+
+      # enable sanity checks
+      'engine.message_sanity_checks'    => true,
+
+      # update every 60 minutes by default
+      'engine.update.default'           => 60,
+
+      # time ranges for updates
+      'engine.update.range'             => {
+        # from midnight until 2am, update every 10 minutes
+        '0-2'     => 10,
+
+        # from 9am until 10pm, update every 5 minutes
+        '8-22'    => 5,
+
+        # from 10pm until midnight, update every 10 minutes
+        '22-24'   => 10,
+      },
     }
 
     #
@@ -32,11 +49,13 @@ module Joggle
     #
     def run
       loop {
-        # check for updates
-        update
+        # check for updates (if we need to)
+        if need_update?
+          update
+        end
 
-        # wait until next update
-        delay
+        # sleep for one minute
+        sleep 60
       }
     end
 
@@ -112,7 +131,7 @@ module Joggle
           row = @tweeter.tweet(who, msg)
           out = "Done (id: #{row['id']})"
         rescue Exception => err
-          out = "Error: #{err}"
+          out = "Error: #{err.backtrace.first}: #{err.message}"
         end
       else
         out = "Error: Message is too short (try adding more words)"
@@ -122,26 +141,66 @@ module Joggle
       reply(who, out)
     end
 
+    #
+    # Get the update interval for the given time
+    # 
+    def get_update_interval(time = Time.now)
+      hour = time.hour
+      default, ranges = %w{default range}.map { |k| @opt["engine.update.#{k}"] }
+
+      if ranges 
+        ranges.each do |key, val|
+          # get start/end hour
+          hours = key.split(/\s*-\s*/).map { |s| s.to_i }
+
+          # if this interval matches the given time, return it
+          if hour >= hours.first && hour <= hours.last
+            return val.to_i
+          end
+        end
+      end
+
+      # return the default interval
+      default.to_i
+    end
+
+    #
+    # Do we need an update?
+    #
+    def need_update?
+      return true unless @last_update
+
+      # get the current timestamp and the current update interval 
+      now = Time.now
+      m = get_update_interval(now)
+      m = 5 if m < 5
+
+      # File.open('/tmp/foo.log', 'a') do |fh|
+      #   fh.puts "now = %s, next_update = %s" % [
+      #     Time.now.strftime('%Y-%m-%dT%H:%M:%S'),
+      #     Time.at(@last_update + (m * 60)).strftime('%Y-%m-%dT%H:%M:%S'),
+      #   ]
+      # end
+
+      # return true if the last update was more than m minutes ago
+      @last_update + (m * 60) < now.to_i
+    end
 
     def update
       if fire('before_engine_update')
+        # save last update time
+        @last_update = Time.now.to_i
+
+        # send updates
         @tweeter.update do |who, id, time, from, msg|
           reply(who, make_response(id, time, from, msg))
         end
 
+        # notify listeners
         fire('engine_update')
       else
         fire('engine_update_stopped')
       end
-    end
-
-    def delay
-      fire('engine_idle')
-
-      minutes = @opt['engine.update_interval']
-      minutes = 3 if minutes < 3
-
-      sleep(minutes * 60)
     end
 
     #

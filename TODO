@@ -21,6 +21,8 @@ Maybe
 
 Future
 ------
+  [ ] .set option (to configure sleep, etc)
   [ ] add additional backends (sqlite3, at least)
   [ ] make config directives relative to config path
   [ ] add support for jabber auto-registration?
+  [ ] ignoring specifc jabber users

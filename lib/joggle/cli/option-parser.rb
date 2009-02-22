@@ -50,6 +50,8 @@ module Joggle
             Joggle::ConfigParser.run(v).each do |key, val|
               if key == 'engine.allow'
                 add_allowed(ret, val)
+              elsif key == 'engine.update.range'
+                add_update_range(ret, val)
               else
                 ret[key] = val
               end
@@ -58,10 +60,6 @@ module Joggle
 
           o.on('-A', '--allow USER', 'Allow Jabber subscription from USER.') do |v|
             add_allowed(ret, v)
-          end
-
-          o.on('-l', '--log FILE', 'Log to FILE.') do |v|
-            ret['runner.log.path'] = v
           end
 
           o.on('-D', '--daemon', 'Run as daemon (in background).') do |v|
@@ -74,6 +72,10 @@ module Joggle
 
           o.on('-L', '--log-level LEVEL', 'Set log level to LEVEL.') do |v|
             ret['runner.log.level'] = v
+          end
+
+          o.on('-l', '--log FILE', 'Log to FILE.') do |v|
+            ret['runner.log.path'] = v
           end
 
           o.on('-p', '--password PASS', 'Jabber password (INSECURE!).') do |v|
@@ -121,6 +123,16 @@ module Joggle
 
         ret['engine.allow'] ||= []
         ret['engine.allow'].concat(val.strip.downcase.split(/\s*,\s*/))
+      end
+
+      def add_update_range(ret, val)
+        return unless val && val =~ /\S/
+
+        if md = val.match(/(\d+)\s*-\s*(\d+)\s+(\d+)/)
+          key, mins = "#{md[1]}-#{md[2]}", md[3].to_i
+          ret['engine.update.range'] ||= {}
+          ret['engine.update.range'][key] = mins
+        end
       end
     end
   end
