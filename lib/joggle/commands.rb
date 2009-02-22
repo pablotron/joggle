@@ -157,7 +157,7 @@ module Joggle
     ]
 
     def do_easteregg(who, arg)
-      reply(who, EGGS[rand(EGGS.size])
+      reply(who, EGGS[rand(EGGS.size)])
     end
   end
 end
