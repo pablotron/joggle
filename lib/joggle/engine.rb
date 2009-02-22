@@ -91,13 +91,15 @@ module Joggle
       who = msg.from.to_s
 
       # only listen to allowed users
-      return unless allowed?(who)
-
-      if md = msg.body.match(COMMAND_REGEX)
-        cmd = md[1].downcase
-        handle_command(who, cmd, md[2])
+      if allowed?(who)
+        if md = msg.body.match(COMMAND_REGEX)
+          cmd = md[1].downcase
+          handle_command(who, cmd, md[2])
+        else
+          handle_message(who, msg.body)
+        end
       else
-        handle_message(who, msg.body)
+        fire('engine_ignored_message', who, msg)
       end
     end
 
@@ -106,6 +108,7 @@ module Joggle
     #
     def on_before_jabber_client_accept_subscription(client, who)
       unless allowed?(who)
+        fire('engine_ignored_subscription', who)
         raise Pablotron::Observable::StopEvent, "denied subscription: #{who}"
       end
     end
@@ -154,12 +157,15 @@ module Joggle
       # get list of allowed users
       a = @opt['engine.allow']
 
+      # default to true
+      ret = true
+
       if a && a.size > 0 
-        a.any? { |str| who.match(/^#{str}/i) }
-      else
-        # no allowed list; return true
-        true
+        ret = a.any? { |str| who.match(/^#{str}/i) }
       end
+
+      # return result
+      ret
     end
 
     #

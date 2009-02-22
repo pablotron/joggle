@@ -204,6 +204,28 @@ module Joggle
         pre = '<Engine>'
         @log.info("#{pre} Message: #{who}: #{msg}.")
       end
+
+      #
+      # Log engine_ignored_message events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_ignored_message(e, who, msg)
+        pre = '<Engine>'
+        @log.info("#{pre} IGNORED: #{who}: #{msg}.")
+      end
+
+      #
+      # Log engine_ignored_subscription events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_ignored_subscription(e, who)
+        pre = '<Engine>'
+        @log.info("#{pre} IGNORED: #{who} (subscription)")
+      end
     end
   end
 end
