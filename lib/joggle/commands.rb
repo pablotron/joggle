@@ -99,9 +99,9 @@ module Joggle
       "  .help                   - Display this help screen.",
       "  .register <user> <pass> - Register Twitter username and password.",
       "  .unregister             - Forget Twitter username and password.",
-      # TODO: "  .force <msg>            - Forget Twitter username and password.",
-      "Any other message with two words or more is sent as a tweet.",
-      "See the <a title='Joggle home page' alt='Joggle home page' href='http://pablotron.org/software/joggle/'>http://pablotron.org/software/joggle/</a> for additional information",
+      # TODO: "  .force <msg>            - Force tweet.",
+      # TODO: "  .list                   - List recent tweets.",
+      "Any other message with two words or more is sent as a tweet.  See the Joggle home page at http://pablotron.org/software/joggle/ for additional information",
     ].join("\n")
 
     #
@@ -109,6 +109,55 @@ module Joggle
     #
     def do_help(who, arg)
       reply(who, HELP)
+    end
+
+    EGGS = [
+      # movie quotes
+      "This is what happens, Larry!",
+      "Got a package, people!",
+      "Billy, do you like wrestling?",
+      "NO AND DEN!",
+      "I'm the dude playing the dude disguised as another dude.",
+      "Hey, want to hear the most annoying sound in the world?",
+      "Bueller?",
+      "Inconcievable!",
+
+      # non-movie quotes
+      "You are in a maze of twisty compiler features, all different.",
+      "You can tune a filesystem, but you can't tuna fish.",
+      "Never attribute to malice that which can adequately explained by stupidity.",
+      "The first thing to do when you find yourself in a hole is to stop digging.",
+      "I once knew a man who had a dog with only three legs, and yet that man could play the banjo like anything.",
+      "The needs of the many outweigh the needs of the guy who can't run fast.",
+      "It may look like I'm doing nothing, but I'm actively waiting for my problems to go away.",
+      "Nobody ever went broke underestimating the intelligence of the American people.",
+      "There are only two things wrong with C++: The initial concept and the implementation.",
+      "There are only two kinds of people, those who finish what they start, and so on.",
+
+      # exclamations
+      "I'LL SAY!!!",
+      "AND HOW!!!",
+      "Cha-ching!",
+      "Crikey!",
+      "Nope.",
+      "Sweet!",
+      "Blimey!",
+
+      # emoticons
+      ":-D",
+      "^_^",
+      ":(",
+      ":-)",
+      ":')-|-<",
+
+      # misc
+      "http://pablotron.org/offended",
+      "<INSERT WITTY REMARK HERE>",
+      "0xBEEFCAFE",
+    ]
+
+    def do_easteregg(who, arg)
+      reply(who, EGGS[rand(EGGS.size])
     end
   end
 end
