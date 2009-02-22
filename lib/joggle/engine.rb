@@ -70,6 +70,18 @@ module Joggle
       end
     end
 
+    #
+    # Jabber subscription listener callback.
+    #
+    def on_before_jabber_client_accept_subscription(client, who)
+      allowed =  @opt['engine.allow']
+
+      if allowed && allowed.size > 0
+        return if allowed.any? { |str| who.match(/^#{str}/i) }
+        raise Pablotron::Observable::StopEvent, "denied subscription: #{who}"
+      end
+    end
+
     private 
 
     def handle_command(who, cmd, arg)

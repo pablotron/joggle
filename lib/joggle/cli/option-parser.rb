@@ -31,8 +31,16 @@ module Joggle
 
           o.on('-c', '--config FILE', 'Use configuration file FILE.') do |v|
             Joggle::ConfigParser.run(v).each do |key, val|
-              ret[key] = val
+              if key == 'engine.allow'
+                add_allowed(ret, val)
+              else
+                ret[key] = val
+              end
             end
+          end
+
+          o.on('-A', '--allow USER', 'Allow Jabber subscription from USER.') do |v|
+            add_allowed(ret, v)
           end
 
           o.on('-l', '--log FILE', 'Log to FILE.') do |v|
@@ -82,6 +90,15 @@ module Joggle
 
         # return results
         ret
+      end
+
+      private 
+
+      def add_allowed(ret, val)
+        return unless val && val =~ /\S/
+
+        ret['engine.allow'] ||= []
+        ret['engine.allow'].concat(val.strip.downcase.split(/\s*,\s*/))
       end
     end
   end
