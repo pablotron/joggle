@@ -1,4 +1,9 @@
-require 'rubygems'
+begin
+  require 'rubygems'
+rescue LoadError
+  # ignore missing rubygems
+end
+
 require 'pstore'
 require 'logger'
 require 'fileutils'
@@ -177,7 +182,6 @@ module Joggle
         pre = '<Engine>'
         @log.debug("#{pre} Command: #{who}: cmd = #{cmd}, arg = #{arg}.")
       end
-
 
       #
       # Log engine_command events.

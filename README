@@ -55,7 +55,8 @@ Want to run Joggle via Cron?  Here's how:
     @reboot joggle --daemon --config  ~/.joggle/joggle.cfg
 
 Note: Although you can specify the JID and password via the command-line
-or the environment, doing so is not recommended on a shared system.
+or the environment, doing so is not recommended on a shared system; see
+the "Security Considerations" section below for additional information.
 
 Using Joggle
 ============
@@ -92,10 +93,10 @@ Advanced Configuration
 TODO
 
   * removing automated registration
-  * ignoring users
+  * directive list
 
-Security Concerns
-=================
+Security Considerations
+=======================
 Since Joggle is saves your Twitter username and password, an unsavory
 system administrator or malicious user could obtain both by sifting
 through the Joggle storage or log files.
@@ -109,29 +110,27 @@ The implications here are as follows:
   * Don't use a Joggle relay run by someone you don't trust.
   * Don't run a Joggle relay on a system that isn't secure.
   * Don't change the path for the configuration, storage, or log files, 
-    without making sure the new location is properly secured (e.g. chmod
-    700).
+    without properly securing the new location (e.g. chmod 700).
+  * Don't specify the username and password via the command-line on a
+    shared system, since the command-line arguments can be viewed by
+    other users (e.g. "ps axu")
 
 You should also be wary of your Jabber providers; many Jabber servers of
 them do not configure Jabber with TLS or SASL enabled, which means that
 both your Jabber and Twitter credentials are sent over the wire as plain
 text.
 
-Note that Joggle also connects to Twitter via SSL.  If you're having
-problems with SSL, you can disable this feature by adding the following
-directives to your config file:
+Joggle connects to Twitter via SSL.  If you're having problems with SSL,
+you can disable this feature by adding the following directives to your
+config file:
 
   # use http instead of https for Twitter updates
+  # (do not do this unless you have to)
   twitter.fetcher.url.timeline  http://twitter.com/statuses/friends_timeline.json
   twitter.fetcher.url.tweet     http://twitter.com/statuses/update.json
 
 Note that doing this is NOT RECOMMENDED; your Twitter username and
 password will be sent over the wire as plain text.
-
-TODO
-
-  * note about stored passwords
-  * note about specifying user/pass on command-line
 
 About the Author
 ================
