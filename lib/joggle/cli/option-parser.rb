@@ -41,7 +41,7 @@ module Joggle
         # create option parser
         o = ::OptionParser.new do |o|
           o.banner = "Usage: #@app [options]"
-          o.separator ''
+          o.separator " "
 
           # add command-line options
           o.separator "Options:"
@@ -80,13 +80,15 @@ module Joggle
             ret['runner.client.pass'] = v
           end
 
-          o.on('-p', '--store FILE', 'Use FILE as backing store.') do |v|
+          o.on('-s', '--store FILE', 'Use FILE as backing store.') do |v|
             ret['runner.store.path'] = v
           end
 
           o.on('-u', '--username USER', 'Jabber username.') do |v|
             ret['runner.client.user'] = v
           end
+
+          o.separator ' '
 
           o.on_tail('-v', '--version', 'Print version string.') do
             puts "Joggle %s, by %s" % [
