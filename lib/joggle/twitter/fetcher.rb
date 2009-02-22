@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/http'
+require 'openssl'
 require 'json'
 require 'pablotron/cache'
 
@@ -10,8 +11,8 @@ module Joggle
     #
     class Fetcher
       DEFAULTS = {
-        'twitter.fetcher.url.timeline' => 'http://twitter.com/statuses/friends_timeline.json',
-        'twitter.fetcher.url.tweet'    => 'http://twitter.com/statuses/update.json',
+        'twitter.fetcher.url.timeline' => 'https://twitter.com/statuses/friends_timeline.json',
+        'twitter.fetcher.url.tweet'    => 'https://twitter.com/statuses/update.json',
       }
 
       #
@@ -67,7 +68,11 @@ module Joggle
         }.join('&')
 
         # FIXME: add user-agent to headers
-        Net::HTTP.start(uri.host, uri.port) do |http|
+        req = Net::HTTP.new(uri.host, uri.port)
+        req.use_ssl = (uri.scheme == 'https')
+
+        # start http request
+        req.start do |http|
           # post request
           r = http.post(uri.path, data, opt)
 
@@ -75,6 +80,10 @@ module Joggle
           case r
           when Net::HTTPSuccess
             ret = JSON.parse(r.body)
+
+            File.open('/tmp/foo.log', 'a') do |fh|
+              fh.puts "r.body = #{r.body}"
+            end
 
             # check result
             if ret && ret.key?('id')
