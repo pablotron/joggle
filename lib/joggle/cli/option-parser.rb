@@ -76,7 +76,7 @@ module Joggle
             ret['runner.log.level'] = v
           end
 
-          o.on('-p', '--password PASS', 'Jabber password.') do |v|
+          o.on('-p', '--password PASS', 'Jabber password (INSECURE!).') do |v|
             ret['runner.client.pass'] = v
           end
 

@@ -96,7 +96,7 @@ module Joggle
 
         # create jabber client
         @log.debug('Creating jabber client.')
-        @client = Jabber::Client.new(@opt['runner.client.user'], @opt['runner.client.pass'])
+        @client = Jabber::Client.new(@opt['runner.client.user'], @opt['runner.client.pass'], @opt)
         @client.on(self)
 
         # create new joggle engine

@@ -10,6 +10,10 @@ module Joggle
     class Client
       include Pablotron::Observable
 
+      DEFAULTS = {
+        'jabber.client.debug' => false,
+      }
+
       #
       # Create a new Jabber::Client object.
       #
@@ -18,9 +22,18 @@ module Joggle
       #   # create new client object
       #   client = Client.new('foo@example.com', 'mysekretpassword')
       #
-      def initialize(user, pass)
-        ::Jabber.debug = true
+      def initialize(user, pass, opt = {})
+        # parse options
+        @opt = DEFAULTS.merge(opt || {})
+
+        # enable debugging to stdout
+        if @opt['jabber.client.debug']
+          ::Jabber.debug = true
+        end
+
+        # FIXME: this belongs elsewhere
         Thread.abort_on_exception = false
+
         # create new jid and client
         jid = ::Jabber::JID.new(user)
         available = ::Jabber::Presence.new.set_type(:available)
