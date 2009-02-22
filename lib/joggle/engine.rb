@@ -54,8 +54,11 @@ module Joggle
           update
         end
 
-        # sleep for one minute
-        sleep 60
+        # fire idle method
+        fire('engine_idle')
+
+        # sleep for thirty seconds
+        sleep 30
       }
     end
 
@@ -81,11 +84,17 @@ module Joggle
     # Jabber message listener callback.
     #
     def on_jabber_client_message(client, msg)
+      # get the message source
+      who = msg.from.to_s
+
+      # only listen to allowed users
+      return unless allowed?(who)
+
       if md = msg.body.match(COMMAND_REGEX)
-        cmd, who = md[1].downcase, msg.from.to_s
+        cmd = md[1].downcase
         handle_command(who, cmd, md[2])
       else
-        handle_message(msg.from.to_s, msg.body)
+        handle_message(who, msg.body)
       end
     end
 
@@ -93,10 +102,7 @@ module Joggle
     # Jabber subscription listener callback.
     #
     def on_before_jabber_client_accept_subscription(client, who)
-      allowed =  @opt['engine.allow']
-
-      if allowed && allowed.size > 0
-        return if allowed.any? { |str| who.match(/^#{str}/i) }
+      unless allowed?(who)
         raise Pablotron::Observable::StopEvent, "denied subscription: #{who}"
       end
     end
@@ -141,6 +147,18 @@ module Joggle
       reply(who, out)
     end
 
+    def allowed?(who)
+      # get list of allowed users
+      a = @opt['engine.allow']
+
+      if a && a.size > 0 
+        a.any? { |str| who.match(/^#{str}/i) }
+      else
+        # no allowed list; return true
+        true
+      end
+    end
+
     #
     # Get the update interval for the given time
     # 
@@ -165,25 +183,27 @@ module Joggle
     end
 
     #
+    # Time of the next update
+    #
+    def next_update(time = Time.now)
+      # get the update interval for the given time
+      m = get_update_interval(time)
+      m = 5 if m < 5
+
+      (@last_update || 0) + (m * 60)
+    end
+
+    #
     # Do we need an update?
     #
     def need_update?
       return true unless @last_update
 
-      # get the current timestamp and the current update interval 
+      # get the current timestamp
       now = Time.now
-      m = get_update_interval(now)
-      m = 5 if m < 5
-
-      # File.open('/tmp/foo.log', 'a') do |fh|
-      #   fh.puts "now = %s, next_update = %s" % [
-      #     Time.now.strftime('%Y-%m-%dT%H:%M:%S'),
-      #     Time.at(@last_update + (m * 60)).strftime('%Y-%m-%dT%H:%M:%S'),
-      #   ]
-      # end
 
       # return true if the last update was more than m minutes ago
-      @last_update + (m * 60) < now.to_i
+      next_update(now) < now.to_i
     end
 
     def update

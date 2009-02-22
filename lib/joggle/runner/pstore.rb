@@ -168,6 +168,18 @@ module Joggle
       end
 
       #
+      # Log engine_idle events (debugging only).
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_command(e, who, cmd, arg)
+        pre = '<Engine>'
+        @log.debug("#{pre} Command: #{who}: cmd = #{cmd}, arg = #{arg}.")
+      end
+
+
+      #
       # Log engine_command events.
       #
       # Note: This method is a listener for Joggle::Engine objects; you
