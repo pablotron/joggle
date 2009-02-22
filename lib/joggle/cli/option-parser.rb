@@ -46,6 +46,10 @@ module Joggle
           # add command-line options
           o.separator "Options:"
 
+          o.on('-A', '--allow USER', 'Allow Jabber subscription from USER.') do |v|
+            add_allowed(ret, v)
+          end
+
           o.on('-c', '--config FILE', 'Use configuration file FILE.') do |v|
             Joggle::ConfigParser.run(v) do |key, val|
               if key == 'engine.allow'
@@ -56,10 +60,6 @@ module Joggle
                 ret[key] = val
               end
             end
-          end
-
-          o.on('-A', '--allow USER', 'Allow Jabber subscription from USER.') do |v|
-            add_allowed(ret, v)
           end
 
           o.on('-D', '--daemon', 'Run as daemon (in background).') do |v|
