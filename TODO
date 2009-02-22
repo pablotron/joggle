@@ -9,18 +9,18 @@ Release
   [x] rdoc documentation
   [x] add client-side support for restricted user list
   [x] remove /resource bit from jid
+  [x] gem
   [ ] finish README
-  [ ] handle client disconnects
-  [ ] gem
 
 Maybe 
 -----
-  [ ] handle rate limiting (add Throttle and message queue?)
+  [ ] handle client disconnects
   [ ] fix http caching (give count to twitter)
   [ ] redirect jabber client output to log file
 
 Future
 ------
+  [ ] handle rate limiting (add Throttle and message queue?)
   [ ] .set option (to configure sleep, etc)
   [ ] add additional backends (sqlite3, at least)
   [ ] make config directives relative to config path
