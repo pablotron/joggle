@@ -1,17 +1,25 @@
-[x] new name, jitter is used too much (-> joggle)
-[x] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
-[x] remove /tmp/foo debugging
-[x] help text
-[x] add new tweets to message store (so they don't show up on updates)
-[x] cli tool and option parsing (bin/joggle)
-[x] rdoc documentation
-[x] add client-side support for restricted user list
-[ ] remove /resource bit from jid
-[ ] handle rate limiting (add Throttle and message queue?)
-[ ] add additional backends (sqlite3, at least)
-[ ] handle client disconnects
-[ ] fix http caching (give count to twitter)
-[ ] redirect jabber client output to log file
-[ ] gem
-[ ] make config directives relative to config path
-[ ] add support for jabber auto-registration?
+Release 
+-------
+  [x] new name, jitter is used too much (-> joggle)
+  [x] remove lib/joggle/monitor/{socket,jabber}.rb (unused)
+  [x] remove /tmp/foo debugging
+  [x] help text
+  [x] add new tweets to message store (so they don't show up on updates)
+  [x] cli tool and option parsing (bin/joggle)
+  [x] rdoc documentation
+  [x] add client-side support for restricted user list
+  [ ] remove /resource bit from jid
+  [ ] handle client disconnects
+  [ ] gem
+
+Maybe 
+-----
+  [ ] handle rate limiting (add Throttle and message queue?)
+  [ ] fix http caching (give count to twitter)
+  [ ] redirect jabber client output to log file
+
+Future
+------
+  [ ] add additional backends (sqlite3, at least)
+  [ ] make config directives relative to config path
+  [ ] add support for jabber auto-registration?
