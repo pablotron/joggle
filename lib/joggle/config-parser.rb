@@ -2,7 +2,7 @@ module Joggle
   #
   # Simple configuration file parser.
   #
-  module ConfigParser
+  class ConfigParser
     #
     # Parse configuration file and pass each directive to the
     # specified block.

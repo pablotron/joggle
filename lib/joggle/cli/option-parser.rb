@@ -47,7 +47,7 @@ module Joggle
           o.separator "Options:"
 
           o.on('-c', '--config FILE', 'Use configuration file FILE.') do |v|
-            Joggle::ConfigParser.run(v).each do |key, val|
+            Joggle::ConfigParser.run(v) do |key, val|
               if key == 'engine.allow'
                 add_allowed(ret, val)
               elsif key == 'engine.update.range'
