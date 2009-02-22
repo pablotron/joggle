@@ -58,10 +58,10 @@ module Joggle
 
         # make sure paths exist
         PATH_KEYS.each do |key|
-          FileUtils.mkdir_p(File.dirname(@opt["runner.#{key}.path"])), {
+          FileUtils.mkdir_p(File.dirname(@opt["runner.#{key}.path"]), {
             # restict access to owner
             :mode => 0700
-          }
+          })
         end
 
         # create logger

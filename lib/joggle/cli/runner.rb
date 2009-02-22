@@ -27,7 +27,7 @@ module Joggle
       def run
         if @opt['cli.daemon']
           pid = Process.fork { 
-            Joggle::Runner::PStore.run(opt)
+            Joggle::Runner::PStore.run(@opt)
             exit 0;
           }
 
@@ -37,7 +37,7 @@ module Joggle
           # print process id and exit
           $stderr.puts "Detached from pid #{pid}"
         else
-          Joggle::Runner::PStore.run(opt)
+          Joggle::Runner::PStore.run(@opt)
         end
 
         exit 0;

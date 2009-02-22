@@ -7,4 +7,4 @@ CWD = File.dirname(__FILE__)
 $LOAD_PATH.unshift(File.join(CWD, '../lib'))
 
 # run ../bin/joggle
-require File.join(CWD, '../bin/joggle')
+load File.join(CWD, '../bin/joggle')
