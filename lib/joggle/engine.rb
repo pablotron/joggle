@@ -21,14 +21,17 @@ module Joggle
 
       # time ranges for updates
       'engine.update.range'             => {
-        # from midnight until 2am, update every 10 minutes
-        '0-2'     => 10,
+        # from 8am until 3pm, update every 10 minutes
+        '8-15'    => 10,
 
-        # from 9am until 10pm, update every 5 minutes
-        '8-22'    => 5,
+        # from 3pm until 10pm, update every 5 minutes
+        '15-22'   => 5,
 
         # from 10pm until midnight, update every 10 minutes
         '22-24'   => 10,
+
+        # from midnight until 2am, update every 20 minutes
+        '0-2'     => 20,
       },
     }
 
