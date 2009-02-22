@@ -6,16 +6,31 @@ latest version of this software is available at the following URL:
 
     http://pablotron.org/software/joggle/
 
-Overview
-========
+Table of Contents
+=================
+  1.  Overview
+  2.  System Requirements
+  3.  Installation
+  4.  Configuration
+  5.  Using Joggle
+  6.  Advanced Configuration
+  7.  Security Considerations
+  8.  Reporting Bugs
+  9.  About the Author
+    
+1. Overview
+===========
 Joggle is an Twitter to XMPP relay.  Jabber messages are sent as tweets,
 and tweets are sent as instant messages.  
 
-System Requirements
-===================
+Installation and configuration is easy and, if you'd like, you can share
+your Joggle installation with more than one person.
+
+2. System Requirements
+======================
 Here's what you'll need to get started using Joggle:
 
-  * Ruby 1.8 (a recent version, including RubyGems)
+  * Ruby 1.8 (a recent version, preferrably including RubyGems)
   * JSON (gem install json)
   * XMPP4r (gem install xmpp4r)
 
@@ -23,20 +38,23 @@ You'll also need a spare Jabber account to relay messages.  If you don't
 have your own Jabber server, you can create a free one through
 jabber.org or gmail.com.
 
-Installation
-============
-If you're using Debian or a Debian-based Linux distribution (e.g.
-Ubuntu), then something like this should suffice:
+3. Installation
+===============
+The easiest way to install Joggle is via RubyGems:
 
-    sudo apt-get install ruby
     sudo gem install joggle
 
-Note: You really do need the RubyGems version of XMPP4r; the Debian
-version of xmpp4r is horribly out of date, and won't work with Joggle
-(or at all, for that matter).
+If you don't use RubyGems, you can also install Joggle using setup.rb,
+like this:
 
-Configuration
-=============
+    sudo ruby ./setup.rb
+
+Note: If you're using Debian or a Debian-based distribution (e.g.
+Ubuntu), then you'll want to use the RubyGems version of XMPP4r -- the
+Debian version is horribly out of date, and may not work with Joggle.
+
+4. Configuration
+================
 The simplest way to get Joggle up and running is like so:
 
     # create ~/.joggle and make sure it's only readable by you
@@ -58,13 +76,14 @@ Note: Although you can specify the JID and password via the command-line
 or the environment, doing so is not recommended on a shared system; see
 the "Security Considerations" section below for additional information.
 
-Using Joggle
-============
+5. Using Joggle
+===============
 In order to use Joggle you'll need to bind your Jabber account to your
 twitter account.  Here's how:
 
  1. Add the Joggle Jabber ID to your IM client (e.g.
     joggle-example@example.com in the examples above).
+
  2. Register your Twitter account with Joggle by sending a 
     message to Joggle in the following form:
 
@@ -75,7 +94,7 @@ twitter account.  Here's how:
 
 Note that more than one person can use the Joggle Jabber relay.  Each
 person just needs to follow the steps above to bind their Jabber and
-Twitter accounts (this feature can be disabled, see the "Advanced
+Twitter accounts (this feature can be disabled; see the "Advanced
 Configuration" section below).  At the moment you can only register one
 Twitter account per person, although this may change in the future.
 
@@ -88,15 +107,55 @@ like this:
 There are several other commands available via message as well; use the
 ".help" command for a complete list.
 
-Advanced Configuration
-======================
-TODO
+6. Advanced Configuration
+=========================
+By default, Joggle will automatically approve any Jabber subscription
+request it receives.  This means that if Joggle is relaying via an
+account on a public Jabber server, then anyone can use your Joggle
+installation to relay to Twitter.
 
-  * removing automated registration
-  * directive list
+To limit your Joggle installation to a specific set of Jabber IDs,
+use the --allow command-line option, like so:
 
-Security Considerations
-=======================
+    # limit joggle access to specific users
+    joggle --allow alice@example.com --allow bob@example.com
+
+Or you can use the 'engine.allow' directive in the configuration file:
+
+    # limit access to alice@example.com and bob@example.com
+    engine.allow alice@example.com
+    engine.allow bob@example.com
+
+You can also configure the Joggle update frequency.  Here's what the
+configuration looks like by default:
+
+    # from 8am until 3pm, update every 10 minutes
+    engine.update.range    8-15       10
+
+    # from 3pm until 10pm, update every 5 minutes
+    engine.update.range    15-22      10
+
+    # from 10pm until midnight, update every 10 minutes
+    engine.update.range    22-24      10 
+
+    # from midnight until 2am, update every 20 minutes
+    engine.update.range    0-2        20 
+
+    # for unspecified times (e.g. 2am - 8am), update every 60 minutes
+    engine.update.default             60
+
+Note that the _minimum_ update frequency is 5 minutes; Joggle will
+ignore anything less than that.  Also note that HTTP caching and a
+number of other checks are performed prior to contacting Twitter, so
+the specified update frequency will probably not translate precisely
+into the actual update frequency.
+
+There are several other command-line options, environment varialbes, and
+configuration file directives.  These will be documented on the Joggle
+web site (http://pablotron.org/software/joggle/) when time permits.
+
+7. Security Considerations
+==========================
 Since Joggle is saves your Twitter username and password, an unsavory
 system administrator or malicious user could obtain both by sifting
 through the Joggle storage or log files.
@@ -108,9 +167,12 @@ by the owner (chmod 700).
 The implications here are as follows:
 
   * Don't use a Joggle relay run by someone you don't trust.
+
   * Don't run a Joggle relay on a system that isn't secure.
+
   * Don't change the path for the configuration, storage, or log files, 
     without properly securing the new location (e.g. chmod 700).
+
   * Don't specify the username and password via the command-line on a
     shared system, since the command-line arguments can be viewed by
     other users (e.g. "ps axu")
@@ -132,7 +194,16 @@ config file:
 Note that doing this is NOT RECOMMENDED; your Twitter username and
 password will be sent over the wire as plain text.
 
-About the Author
-================
+8. Reporting Bugs
+=================
+To report a bug or request a feature, visit the Joggle Redmine
+repository at the following URL:
+
+    http://redmine.pablotron.org/projects/show/joggle
+
+You can also contact me directly via email using the address below.
+
+9. About the Author
+===================
 Paul Duncan <pabs@pablotron.org>
 http://pablotron.org/
