@@ -8,8 +8,8 @@ Release
   [x] cli tool and option parsing (bin/joggle)
   [x] rdoc documentation
   [x] add client-side support for restricted user list
+  [x] remove /resource bit from jid
   [ ] finish README
-  [ ] remove /resource bit from jid
   [ ] handle client disconnects
   [ ] gem
 

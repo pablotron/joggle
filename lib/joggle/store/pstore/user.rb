@@ -88,7 +88,7 @@ module Joggle
         # Map user key to PStore root key.
         #
         def user_store_key(key)
-          'user-' << Digest::MD5.hexdigest(key)
+          'user-' << Digest::MD5.hexdigest(key.gsub(/\/.*$/, ''))
         end
       end
     end

@@ -51,7 +51,7 @@ module Joggle
 
         stoppable_action('twitter_engine_register_user', who, user, pass) do
           store.add_user(who, { 
-            'who'         => who,
+            'who'         => who.gsub(/\/.*$/, ''),
             'user'        => user,
             'pass'        => pass,
             'updated_at'  => 0,
