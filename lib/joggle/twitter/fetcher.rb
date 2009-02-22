@@ -5,18 +5,28 @@ require 'pablotron/cache'
 
 module Joggle
   module Twitter
+    #
+    # Handler for Twitter HTTP requests.
+    #
     class Fetcher
       DEFAULTS = {
         'twitter.fetcher.url.timeline' => 'http://twitter.com/statuses/friends_timeline.json',
         'twitter.fetcher.url.tweet'    => 'http://twitter.com/statuses/update.json',
       }
 
+      #
+      # Create a new Twitter::Fetcher object.
+      #
       def initialize(message_store, cache, opt = {})
         @opt = DEFAULTS.merge(opt || {})
         @store = message_store
         @cache = cache
       end
 
+      #
+      # Get Twitter updates for given user and pass them to the
+      # specified block.
+      #
       def get(user, show_all = false, &block)
         url, opt = url_for(user, 'timeline'), opt_for(user)
 
@@ -40,6 +50,9 @@ module Joggle
         end
       end
 
+      #
+      # Send a tweet.  Use Joggle::Engine#tweet instead.
+      #
       def tweet(user, msg)
         # build URI and headers (opt)
         url, opt = url_for(user, 'tweet'), opt_for(user)

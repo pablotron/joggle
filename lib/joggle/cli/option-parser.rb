@@ -39,6 +39,14 @@ module Joggle
             ret['runner.log.path'] = v
           end
 
+          o.on('-D', '--daemon', 'Run as daemon (in background).') do |v|
+            ret['cli.daemon'] = true
+          end
+
+          o.on('--foreground', 'Run in foreground (the default).') do |v|
+            ret['cli.daemon'] = false
+          end
+
           o.on('-L', '--log-level LEVEL', 'Set log level to LEVEL.') do |v|
             ret['runner.log.level'] = v
           end

@@ -12,6 +12,10 @@ require 'joggle/engine'
 
 module Joggle
   module Runner
+    #
+    # Basic PStore-backed runner.  Creates all necessary objects from
+    # given config and binds them together.
+    #
     class PStore
       PATHS = {
         'store' => ENV['JOGGLE_STORE_PATH'] || '~/.joggle/joggle.pstore',
@@ -37,12 +41,18 @@ module Joggle
 
       attr_reader :log, :store, :cache, :fetcher, :tweeter, :client, :engine
 
+      #
+      # Create and run PStore runner object.
+      #
       def self.run(opt = nil)
         new(opt).run
       end
 
       PATH_KEYS = %w{store log}
 
+      #
+      # Create new PStore runner object from the given options.
+      #
       def initialize(opt = nil)
         @opt = DEFAULTS.merge(opt || {})
 
@@ -64,6 +74,9 @@ module Joggle
         @store = Store::PStore::All.new(pstore)
       end
 
+      #
+      # Run this runner.
+      #
       def run
         # create cache
         @log.debug('Creating cache.')
@@ -96,31 +109,67 @@ module Joggle
       # log listeners #
       #################
       
+      #
+      # Log twitter_engine_register_user events.
+      #
+      # Note: This method is a listener for Twitter::Engine objects; you
+      # should never call it directly.
+      #
       def on_twitter_engine_register_user(e, who, user, pass)
         pre = '<Twitter::Engine>'
         @log.info("#{pre} Registering user: #{who} (xmpp) => #{user} (twitter).")
       end
       
+      #
+      # Log twitter_engine_unregister_user events.
+      #
+      # Note: This method is a listener for Twitter::Engine objects; you
+      # should never call it directly.
+      #
       def on_twitter_engine_unregister_user(e, who)
         pre = '<Twitter::Engine>'
         @log.info("#{pre} Unregistering user: #{who} (xmpp).")
       end
 
+      #
+      # Log twitter_engine_tweet events.
+      #
+      # Note: This method is a listener for Twitter::Engine objects; you
+      # should never call it directly.
+      #
       def on_twitter_engine_tweet(e, who, msg)
         pre = '<Twitter::Engine>'
         @log.info("#{pre} Tweet: #{who}: #{msg}.")
       end
 
+      #
+      # Log twitter_engine_update events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
       def on_twitter_engine_update(e, user)
         pre = '<Twitter::Engine>'
         @log.info("#{pre} Updating: #{user['who']}.")
       end
 
+      #
+      # Log engine_command events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
       def on_engine_command(e, who, cmd, arg)
         pre = '<Engine>'
         @log.info("#{pre} Command: #{who}: cmd = #{cmd}, arg = #{arg}.")
       end
 
+      #
+      # Log engine_message events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
       def on_engine_message(e, who, msg)
         pre = '<Engine>'
         @log.info("#{pre} Message: #{who}: #{msg}.")

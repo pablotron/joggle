@@ -2,4 +2,5 @@
 
 require 'joggle/cli/runner'
 
+# create and run joggle cli interface
 Joggle::CLI::Runner.run($0, ARGV)

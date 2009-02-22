@@ -4,6 +4,9 @@ require 'pablotron/observable'
 
 module Joggle
   module Twitter
+    #
+    # Twitter engine object.
+    #
     class Engine
       include Pablotron::Observable
 
@@ -12,12 +15,18 @@ module Joggle
         'twitter.engine.update_interval' => 5,
       }
 
+      #
+      # Create new twitter engine.
+      #
       def initialize(user_store, fetcher, opt = nil)
         @opt = DEFAULTS.merge(opt || {})
         @store = user_store
         @fetcher = fetcher
       end
 
+      #
+      # Is the given Jabber user ignored?
+      #
       def ignored?(who)
         if rec = @store.get_user(who)
           rec['ignored']
@@ -26,10 +35,17 @@ module Joggle
         end
       end
 
+      #
+      # Is the given Jabber registered?
+      #
       def registered?(who)
         @store.has_user?(who)
       end
 
+      #
+      # Bind the given Jabber user to the given Twitter username and
+      # password.
+      #
       def register(who, user, pass)
         store = @store
 
@@ -47,6 +63,9 @@ module Joggle
         end
       end
 
+      #
+      # Forget registration for the given  Jabber user.
+      #
       def unregister(who)
         store = @store
 
@@ -55,6 +74,9 @@ module Joggle
         end
       end
 
+      #
+      # Send a tweet as the given Jabber user.
+      #
       def tweet(who, msg)
         ret, store, fetcher = nil, @store, @fetcher
 
@@ -68,6 +90,9 @@ module Joggle
         ret
       end
 
+      #
+      # List recent tweets for the given user.
+      #
       def list(who, &block)
         store, fetcher = @store, @fetcher
 
@@ -80,6 +105,9 @@ module Joggle
         end
       end
 
+      #
+      # Update all users.
+      #
       def update(&block) 
         store, updates = @store, []
 
@@ -100,6 +128,9 @@ module Joggle
 
       private
 
+      #
+      # Update specific Jabber user.
+      #
       def update_user(user, &block)
         last_id = nil
 
@@ -114,6 +145,9 @@ module Joggle
         })
       end
 
+      #
+      # Does the given Jabber user need an update?
+      #
       def needs_update?(user)
         now, since = Time.now, Time.now - @opt['twitter.engine.update_interval']
 
@@ -127,6 +161,9 @@ module Joggle
         end
       end
 
+      #
+      # Is the given Jabber user asleep?
+      #
       def is_sleeping?(user, time = Time.now)
         # build sleep range
         sleep = %w{bgn end}.map { |s| user["sleep_#{s}"].to_i }
@@ -135,6 +172,9 @@ module Joggle
         time.hour >= sleep.first && time.hour <= sleep.last
       end
 
+      #
+      # Fire a stoppable event.
+      #
       def stoppable_action(key, *args, &block)
         if fire("before_#{key}", *args)
           block.call

@@ -1,5 +1,11 @@
 module Joggle
+  #
+  # Mixin to handle commands.
+  #
   module Commands
+    #
+    # Handle .register command.
+    #
     def do_register(who, arg)
       # see if user is registered
       if user = @tweeter.registered?(who)
@@ -24,6 +30,9 @@ module Joggle
       reply(who, msg)
     end
 
+    #
+    # Handle .unregister command.
+    #
     def do_unregister(who, arg)
       # see if user is registered
       if @tweeter.registered?(who)
@@ -47,6 +56,9 @@ module Joggle
       reply(who, msg)
     end
 
+    #
+    # Handle .list command.
+    #
     def do_list(who, arg)
       # see if user is registered
       if @tweeter.registered?(who)
@@ -78,6 +90,9 @@ module Joggle
       reply(who, msg)
     end
 
+    #
+    # String constant for .help command.
+    #
     HELP = [
       "Joggle Help:",
       "Available commands:",
@@ -89,6 +104,9 @@ module Joggle
       "See the <a title='Joggle home page' alt='Joggle home page' href='http://pablotron.org/software/joggle/'>http://pablotron.org/software/joggle/</a> for additional information",
     ].join("\n")
 
+    #
+    # Handle .help command.
+    #
     def do_help(who, arg)
       reply(who, HELP)
     end
