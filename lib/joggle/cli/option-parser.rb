@@ -5,19 +5,36 @@ require 'joggle/cli/option-parser'
 
 module Joggle
   module CLI
+    # 
+    # Option parser for Joggle command-line interface.
+    # 
     class OptionParser
+      # 
+      # Default configuration.
+      # 
       DEFAULTS = {
-        # any option defaults go here
+        # pull default jabber username and password from environment
+        'runner.client.user' => ENV['JOGGLE_USERNAME'],
+        'runner.client.pass' => ENV['JOGGLE_PASSWORD'],
       }
 
+      # 
+      # Create and run a new command-line option parser.
+      # 
       def self.run(app, args)
         new(app).run(args)
       end
 
+      # 
+      # Create new command-line option parser.
+      # 
       def initialize(app)
         @app = app
       end
 
+      # 
+      # Run command-line option parser.
+      # 
       def run(args)
         ret = DEFAULTS.merge({})
 
@@ -94,6 +111,9 @@ module Joggle
 
       private 
 
+      #
+      # Add an allowed user.
+      #
       def add_allowed(ret, val)
         return unless val && val =~ /\S/
 
