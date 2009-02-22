@@ -10,7 +10,7 @@ Release
   [x] add client-side support for restricted user list
   [x] remove /resource bit from jid
   [x] gem
-  [ ] finish README
+  [x] finish README
 
 Maybe 
 -----
@@ -20,6 +20,7 @@ Maybe
 
 Future
 ------
+  [ ] in_response_to (check time of last response for @messages?)
   [ ] handle rate limiting (add Throttle and message queue?)
   [ ] http proxy for post
   [ ] .set option (to configure sleep, etc)
