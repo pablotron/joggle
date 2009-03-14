@@ -34,7 +34,7 @@ module Joggle
         # log configuration
         'runner.log.path'         => File.expand_path(PATHS['log']),
         # FIXME: change to INFO
-        'runner.log.level'        => 'DEBUG',
+        'runner.log.level'        => 'INFO',
         'runner.log.format'       => '%Y-%m-%dT%H:%M:%S',
 
         # cache configuration
