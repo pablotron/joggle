@@ -142,7 +142,7 @@ module Joggle
       fire('engine_message', who, msg)
       
       # make sure message isn't too long
-        if msg.length > 140
+      if msg.length < 140
         # make sure message is sane
         if sane_message?(msg)
           begin
