@@ -14,8 +14,8 @@ module Joggle
       # 
       DEFAULTS = {
         # pull default jabber username and password from environment
-        'runner.client.user' => ENV['JOGGLE_USERNAME'],
-        'runner.client.pass' => ENV['JOGGLE_PASSWORD'],
+        'jabber.user' => ENV['JOGGLE_USERNAME'],
+        'jabber.pass' => ENV['JOGGLE_PASSWORD'],
       }
 
       # 
@@ -79,7 +79,7 @@ module Joggle
           end
 
           o.on('-p', '--password PASS', 'Jabber password (INSECURE!).') do |v|
-            ret['runner.client.pass'] = v
+            ret['jabber.pass'] = v
           end
 
           o.on('-s', '--store FILE', 'Use FILE as backing store.') do |v|
@@ -87,7 +87,7 @@ module Joggle
           end
 
           o.on('-u', '--username USER', 'Jabber username.') do |v|
-            ret['runner.client.user'] = v
+            ret['jabber.user'] = v
           end
 
           o.separator ' '

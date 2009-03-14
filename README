@@ -61,8 +61,8 @@ The simplest way to get Joggle up and running is like so:
     mkdir ~/.joggle && chmod 700 ~/.joggle
 
     # add username and password to config
-    echo 'runner.client.user joggle-example@example.com' > ~/.joggle/joggle.cfg
-    echo 'runner.client.pass s3kr3t_' >> ~/.joggle/joggle.cfg
+    echo 'jabber.user joggle-example@example.com' > ~/.joggle/joggle.cfg
+    echo 'jabber.pass s3kr3t_' >> ~/.joggle/joggle.cfg
 
     # run joggle
     joggle --config ~/.joggle/joggle.cfg
