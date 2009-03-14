@@ -11,13 +11,13 @@ Release
   [x] remove /resource bit from jid
   [x] gem
   [x] finish README
+  [x] check length of message before trying to submit it
 
 Next
 ----
   [ ] in_response_to (check time of last response for @messages?)
   [ ] .reply option
-  [ ] better error handling for 404s
-  [ ] check length of message before trying to submit it
+  [-] better error handling for 404s
   [ ] handle rate limiting (add Throttle and message queue?)
   [ ] .set option (to configure sleep, etc)
 
