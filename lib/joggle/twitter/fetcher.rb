@@ -2,7 +2,7 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 require 'json'
-require 'pablotron/cache'
+require 'joggle/pablotron/cache'
 
 module Joggle
   module Twitter
@@ -111,7 +111,7 @@ module Joggle
           end
         end
 
-        Pablotron::Cache.urlify(@opt['twitter.fetcher.url.' + key], args)
+        Joggle::Pablotron::Cache.urlify(@opt['twitter.fetcher.url.' + key], args)
       end
 
       def opt_for(user)

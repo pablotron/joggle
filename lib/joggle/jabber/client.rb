@@ -1,4 +1,4 @@
-require 'pablotron/observable'
+require 'joggle/pablotron/observable'
 require 'xmpp4r'
 require 'xmpp4r/roster'
 
@@ -8,7 +8,7 @@ module Joggle
     # Simple XMPP client.
     #
     class Client
-      include Pablotron::Observable
+      include Joggle::Pablotron::Observable
 
       DEFAULTS = {
         'jabber.client.debug' => false,

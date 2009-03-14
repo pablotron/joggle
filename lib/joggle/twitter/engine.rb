@@ -1,6 +1,6 @@
 require 'net/http'
 require 'time'
-require 'pablotron/observable'
+require 'joggle/pablotron/observable'
 
 module Joggle
   module Twitter
@@ -8,7 +8,7 @@ module Joggle
     # Twitter engine object.
     #
     class Engine
-      include Pablotron::Observable
+      include Joggle::Pablotron::Observable
 
       DEFAULTS = {
         # update interval, in minutes

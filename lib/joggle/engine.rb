@@ -1,4 +1,4 @@
-require 'pablotron/observable'
+require 'joggle/pablotron/observable'
 require 'joggle/commands'
 
 module Joggle
@@ -6,7 +6,7 @@ module Joggle
   # Joggle engine object.  This is where the magic happens.
   #
   class Engine
-    include Pablotron::Observable
+    include Joggle::Pablotron::Observable
     include Commands
 
     DEFAULTS = {
@@ -113,7 +113,7 @@ module Joggle
     def on_before_jabber_client_accept_subscription(client, who)
       unless allowed?(who)
         fire('engine_ignored_subscription', who)
-        raise Pablotron::Observable::StopEvent, "denied subscription: #{who}"
+        raise Joggle::Pablotron::Observable::StopEvent, "denied subscription: #{who}"
       end
     end
 

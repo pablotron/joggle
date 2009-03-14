@@ -7,7 +7,7 @@ end
 require 'pstore'
 require 'logger'
 require 'fileutils'
-require 'pablotron/cache'
+require 'joggle/pablotron/cache'
 require 'joggle/version'
 require 'joggle/store/pstore/all'
 require 'joggle/jabber/client'
@@ -39,7 +39,6 @@ module Joggle
 
         # cache configuration
         'runner.cache.headers'    => {
-          # 'user-agent' => "Joggle/#{Joggle::VERSION}",
           'user-agent' => "Joggle/#{Joggle::VERSION}",
         },
       }
@@ -88,7 +87,7 @@ module Joggle
       def run
         # create cache
         @log.debug('Creating cache.')
-        @cache = Pablotron::Cache.new(@store, @opt['runner.cache.headers'])
+        @cache = Joggle::Pablotron::Cache.new(@store, @opt['runner.cache.headers'])
 
         # create fetcher
         @log.debug('Creating twitter fetcher.')
