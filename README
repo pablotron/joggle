@@ -61,8 +61,11 @@ The simplest way to get Joggle up and running is like so:
     mkdir ~/.joggle && chmod 700 ~/.joggle
 
     # add username and password to config
-    echo 'jabber.user joggle-example@example.com' > ~/.joggle/joggle.cfg
-    echo 'jabber.pass s3kr3t_' >> ~/.joggle/joggle.cfg
+    cp doc/joggle.cfg.sample ~/.joggle/joggle.cfg
+
+    # edit ~/.joggle/joggle.cfg and add your jabber username and
+    # password!
+    vim ~/.joggle/joggle.cfg
 
     # run joggle
     joggle --config ~/.joggle/joggle.cfg
@@ -81,8 +84,8 @@ the "Security Considerations" section below for additional information.
 In order to use Joggle you'll need to bind your Jabber account to your
 twitter account.  Here's how:
 
- 1. Add the Joggle Jabber ID to your IM client (e.g.
-    joggle-example@example.com in the examples above).
+ 1. Add the Joggle Jabber ID to your IM client.  Joggle will
+    automatically accept any subscription.
 
  2. Register your Twitter account with Joggle by sending a 
     message to Joggle in the following form:
