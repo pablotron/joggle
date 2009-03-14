@@ -1,0 +1,13 @@
+#
+# joggle.cfg.sample - This is my Joggle configuration file, with the
+# jabber username and password changed.
+#
+
+# jabber username and password
+jabber.user twitter@example.com
+jabber.pass REPLACEME
+
+# update every 5 minutes, except from 6am-10am
+engine.update.range  0-6     5
+engine.update.range  6-10   30
+engine.update.range 10-24    5
