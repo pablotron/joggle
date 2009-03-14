@@ -137,16 +137,21 @@ module Joggle
       # notify listeners
       fire('engine_message', who, msg)
       
-      # make sure message is sane
-      if sane_message?(msg)
-        begin
-          row = @tweeter.tweet(who, msg)
-          out = "Done (id: #{row['id']})"
-        rescue Exception => err
-          out = "Error: #{err.backtrace.first}: #{err.message}"
+      # make sure message isn't too long
+        if msg.length > 140
+        # make sure message is sane
+        if sane_message?(msg)
+          begin
+            row = @tweeter.tweet(who, msg)
+            out = "Done (id: #{row['id']})"
+          rescue Exception => err
+            out = "Error: #{err.backtrace.first}: #{err.message}"
+          end
+        else
+          out = "Error: Message is too short (try adding more words)"
         end
       else
-        out = "Error: Message is too short (try adding more words)"
+        out = 'Message length is greater than 140 characters'
       end
 
       # send reply

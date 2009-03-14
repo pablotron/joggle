@@ -12,6 +12,15 @@ Release
   [x] gem
   [x] finish README
 
+Next
+----
+  [ ] in_response_to (check time of last response for @messages?)
+  [ ] .reply option
+  [ ] better error handling for 404s
+  [ ] check length of message before trying to submit it
+  [ ] handle rate limiting (add Throttle and message queue?)
+  [ ] .set option (to configure sleep, etc)
+
 Maybe 
 -----
   [ ] handle client disconnects
@@ -20,10 +29,7 @@ Maybe
 
 Future
 ------
-  [ ] in_response_to (check time of last response for @messages?)
-  [ ] handle rate limiting (add Throttle and message queue?)
   [ ] http proxy for post
-  [ ] .set option (to configure sleep, etc)
   [ ] add additional backends (sqlite3, at least)
   [ ] make config directives relative to config path
   [ ] add support for jabber auto-registration?
