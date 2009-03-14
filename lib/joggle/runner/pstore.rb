@@ -162,6 +162,17 @@ module Joggle
       end
 
       #
+      # Log engine_update_error events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_update_error(e, err) 
+        pre = '<Engine>'
+        @log.warn("#{pre} Twitter update failed: #{err}.")
+      end
+
+      #
       # Log engine_reply events.
       #
       # Note: This method is a listener for Joggle::Engine objects; you
@@ -170,6 +181,17 @@ module Joggle
       def on_engine_reply(e, who, msg)
         pre = '<Engine>'
         @log.info("#{pre} Reply: #{who}: #{msg}.")
+      end
+
+      #
+      # Log engine_reply_error events.
+      #
+      # Note: This method is a listener for Joggle::Engine objects; you
+      # should never call it directly.
+      #
+      def on_engine_reply_error(e, who, msg, err) 
+        pre = '<Engine>'
+        @log.warn("#{pre} Reply Error: Couldn't send reply \"#{msg}\" to #{who}: #{err}.")
       end
 
       #

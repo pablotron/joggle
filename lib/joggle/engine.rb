@@ -69,11 +69,15 @@ module Joggle
     # Reply to a user with the given message.
     #
     def reply(who, msg)
-      if fire('engine_before_reply', who, msg)
-        @client.deliver(who, msg)
-        fire('engine_reply', who, msg)
-      else
-        fire('engine_reply_stopped', who, msg, err)
+      begin
+        if fire('engine_before_reply', who, msg)
+          @client.deliver(who, msg)
+          fire('engine_reply', who, msg)
+        else
+          fire('engine_reply_stopped', who, msg, err)
+        end
+      rescue Exception => err
+        fire('engine_reply_error', who, msg, err)
       end
     end
 
@@ -221,19 +225,23 @@ module Joggle
     end
 
     def update
-      if fire('before_engine_update')
-        # save last update time
-        @last_update = Time.now.to_i
+      begin
+        if fire('before_engine_update')
+          # save last update time
+          @last_update = Time.now.to_i
 
-        # send updates
-        @tweeter.update do |who, id, time, from, msg|
-          reply(who, make_response(id, time, from, msg))
+          # send updates
+          @tweeter.update do |who, id, time, from, msg|
+            reply(who, make_response(id, time, from, msg))
+          end
+
+          # notify listeners
+          fire('engine_update')
+        else
+          fire('engine_update_stopped')
         end
-
-        # notify listeners
-        fire('engine_update')
-      else
-        fire('engine_update_stopped')
+      rescue Exception => err
+        fire('engine_update_error', err)
       end
     end
 
