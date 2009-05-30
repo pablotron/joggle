@@ -27,6 +27,7 @@ module Joggle
       def run
         if @opt['cli.daemon']
           pid = Process.fork { 
+            $stderr.reopen('/dev/null', 'w')
             Joggle::Runner::PStore.run(@opt)
             exit 0;
           }

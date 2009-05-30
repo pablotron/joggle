@@ -72,6 +72,7 @@ gem_spec = Gem::Specification.new do |s|
   s.platform  = pkg.platform
   s.version   = pkg.version
   s.summary   = s.description = pkg.blurb
+  s.rubyforge_project = 'pablotron'
 
   # files
   pkg.reqs.each { |req| s.requirements << req }
